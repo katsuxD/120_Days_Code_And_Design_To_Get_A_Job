@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:level3_weather_app_api/controller/global_controller.dart';
 import 'package:level3_weather_app_api/models/weather/current.dart';
+import 'package:level3_weather_app_api/utils/custom_color.dart';
+import 'package:level3_weather_app_api/widgets/comfort_level.dart';
 import 'package:level3_weather_app_api/widgets/current_weather_widget.dart';
 import 'package:level3_weather_app_api/widgets/daily_data_forecast.dart';
 import 'package:level3_weather_app_api/widgets/header_widget.dart';
@@ -49,7 +51,18 @@ class _HomeScreenState extends State<HomeScreen> {
                               globalController.getData().getHourlyWeather()),
                       DailyDataForecast(
                           weatherDataDaily:
-                              globalController.getData().getDailyWeather())
+                              globalController.getData().getDailyWeather()),
+                      Container(
+                        height: 1,
+                        color: CustomsColors.dividerLine,
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      ComfortLevel(
+                        weatherDataCurrent:
+                            globalController.getData().getCurrentWeather(),
+                      )
                     ],
                   ),
                 ),
