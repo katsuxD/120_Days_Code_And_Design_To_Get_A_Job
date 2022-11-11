@@ -22,8 +22,42 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: const _CustomAppbar(),
-        bottomNavigationBar: _CustomNavbar(),
-        body: Container(),
+        bottomNavigationBar: const _CustomNavbar(),
+        body: SingleChildScrollView(
+          child: Column(children: [
+            Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text("Welcome",
+                      style: Theme.of(context).textTheme.bodyLarge!),
+                  Text(
+                    "Enjoy your favorite music",
+                    style: Theme.of(context)
+                        .textTheme
+                        .headline6!
+                        .copyWith(fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  TextFormField(
+                    decoration: InputDecoration(
+                        isDense: true,
+                        filled: true,
+                        fillColor: Colors.white,
+                        hintText: "Search",
+                        hintStyle: Theme.of(context)
+                            .textTheme
+                            .bodyMedium!
+                            .copyWith(color: Colors.grey.shade400)),
+                  )
+                ],
+              ),
+            )
+          ]),
+        ),
       ),
     );
   }
