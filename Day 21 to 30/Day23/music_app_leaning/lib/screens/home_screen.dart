@@ -1,4 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:music_app_leaning/models/playlist_models.dart';
+
+import '../models/song_model.dart';
+import '../widgets/playlist_card.dart';
+import '../widgets/section_header.dart';
+import '../widgets/song_card.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -8,6 +14,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  List<Song> songs = Song.songs;
+  List<Playlist> playlist = Playlist.playlists;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -25,39 +33,116 @@ class _HomeScreenState extends State<HomeScreen> {
         bottomNavigationBar: const _CustomNavbar(),
         body: SingleChildScrollView(
           child: Column(children: [
+            const _CustomTextField(),
+            TrendingWidget(songs: songs),
             Padding(
-              padding: const EdgeInsets.all(20.0),
+              padding: const EdgeInsets.all(20),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("Welcome",
-                      style: Theme.of(context).textTheme.bodyLarge!),
-                  Text(
-                    "Enjoy your favorite music",
-                    style: Theme.of(context)
-                        .textTheme
-                        .headline6!
-                        .copyWith(fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  TextFormField(
-                    decoration: InputDecoration(
-                        isDense: true,
-                        filled: true,
-                        fillColor: Colors.white,
-                        hintText: "Search",
-                        hintStyle: Theme.of(context)
-                            .textTheme
-                            .bodyMedium!
-                            .copyWith(color: Colors.grey.shade400)),
+                  const SectionHeader(title: "Playlist", action: "View More"),
+                  ListView.builder(
+                    physics: const NeverScrollableScrollPhysics(),
+                    padding: const EdgeInsets.only(top: 20),
+                    shrinkWrap: true,
+                    itemCount: playlist.length,
+                    itemBuilder: (context, index) {
+                      return PlaylistCard(playlist: playlist[index]);
+                    },
                   )
                 ],
               ),
             )
           ]),
         ),
+      ),
+    );
+  }
+}
+
+class TrendingWidget extends StatelessWidget {
+  const TrendingWidget({
+    Key? key,
+    required this.songs,
+  }) : super(key: key);
+
+  final List<Song> songs;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 20, bottom: 20, top: 14),
+      child: Column(
+        children: [
+          const Padding(
+            padding: EdgeInsets.only(right: 20),
+            child: SectionHeader(
+              title: "Trending Music",
+              action: "View More",
+            ),
+          ),
+          const SizedBox(height: 20),
+          SizedBox(
+            height: MediaQuery.of(context).size.height * 0.27,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: songs.length,
+              itemBuilder: (context, index) {
+                return SongCard(
+                  song: songs[index],
+                );
+              },
+            ),
+          )
+        ],
+      ),
+    );
+  }
+}
+
+class _CustomTextField extends StatelessWidget {
+  const _CustomTextField({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(20.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text("Welcome", style: Theme.of(context).textTheme.bodyLarge!),
+          Text(
+            "Enjoy your favorite music",
+            style: Theme.of(context)
+                .textTheme
+                .headline6!
+                .copyWith(fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          TextFormField(
+            decoration: InputDecoration(
+              isDense: true,
+              filled: true,
+              fillColor: Colors.white,
+              hintText: "Search",
+              hintStyle: Theme.of(context)
+                  .textTheme
+                  .bodyMedium!
+                  .copyWith(color: Colors.grey.shade400),
+              prefixIcon: Icon(
+                Icons.search,
+                color: Colors.grey.shade400,
+              ),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(15),
+                borderSide: BorderSide.none,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
