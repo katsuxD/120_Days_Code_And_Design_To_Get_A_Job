@@ -65,9 +65,46 @@ class _SongScreenState extends State<SongScreen> {
               song.backgroundUrl,
               fit: BoxFit.cover,
             ),
-            const _BackgroundFilter()
+            const _BackgroundFilter(),
+            MusicPLayer(
+                seekBarDataStream: _seekBarDataStream, audioPlayer: audioPlayer)
           ],
         ));
+  }
+}
+
+class MusicPLayer extends StatelessWidget {
+  const MusicPLayer({
+    Key? key,
+    required Stream<SeekBarData> seekBarDataStream,
+    required this.audioPlayer,
+  })  : _seekBarDataStream = seekBarDataStream,
+        super(key: key);
+
+  final Stream<SeekBarData> _seekBarDataStream;
+  final AudioPlayer audioPlayer;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          StreamBuilder<SeekBarData>(
+              stream: _seekBarDataStream,
+              builder: (context, snapshot) {
+                final positionData = snapshot.data;
+                return SeekBar(
+                  position: positionData?.position ?? Duration.zero,
+                  duration: positionData?.duration ?? Duration.zero,
+                  onChanged: audioPlayer.seek,
+                );
+              }),
+        ],
+      ),
+    );
   }
 }
 
