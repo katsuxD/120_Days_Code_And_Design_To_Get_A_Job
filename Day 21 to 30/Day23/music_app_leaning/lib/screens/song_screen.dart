@@ -93,17 +93,85 @@ class MusicPLayer extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           StreamBuilder<SeekBarData>(
-              stream: _seekBarDataStream,
-              builder: (context, snapshot) {
-                final positionData = snapshot.data;
-                return SeekBar(
-                  position: positionData?.position ?? Duration.zero,
-                  duration: positionData?.duration ?? Duration.zero,
-                  onChanged: audioPlayer.seek,
-                );
-              }),
+            stream: _seekBarDataStream,
+            builder: (context, snapshot) {
+              final positionData = snapshot.data;
+              return SeekBar(
+                position: positionData?.position ?? Duration.zero,
+                duration: positionData?.duration ?? Duration.zero,
+                onChanged: audioPlayer.seek,
+              );
+            },
+          ),
+          _PlayerButton(audioPlayer: audioPlayer)
         ],
       ),
+    );
+  }
+}
+
+class _PlayerButton extends StatelessWidget {
+  const _PlayerButton({
+    Key? key,
+    required this.audioPlayer,
+  }) : super(key: key);
+
+  final AudioPlayer audioPlayer;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        StreamBuilder<PlayerState>(
+          stream: audioPlayer.playerStateStream,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              final playerState = snapshot.data;
+              final processingState = playerState!.processingState;
+
+              if (processingState == ProcessingState.loading ||
+                  processingState == ProcessingState.buffering) {
+                return Container(
+                  width: 64.0,
+                  height: 64.0,
+                  margin: const EdgeInsets.all(10),
+                  child: const CircularProgressIndicator(),
+                );
+              } else if (!audioPlayer.playing) {
+                return IconButton(
+                  onPressed: audioPlayer.play,
+                  icon: const Icon(
+                    Icons.play_circle,
+                    color: Colors.white,
+                  ),
+                  iconSize: 75,
+                );
+              } else if (processingState != ProcessingState.completed) {
+                return IconButton(
+                  onPressed: audioPlayer.pause,
+                  icon: const Icon(
+                    Icons.play_circle,
+                    color: Colors.white,
+                  ),
+                  iconSize: 75,
+                );
+              } else {
+                return IconButton(
+                  onPressed: () => audioPlayer.seek(Duration.zero,
+                      index: audioPlayer.effectiveIndices!.first),
+                  icon: const Icon(
+                    Icons.replay_circle_filled_outlined,
+                    color: Colors.white,
+                  ),
+                  iconSize: 75,
+                );
+              }
+            } else {
+              return const CircularProgressIndicator();
+            }
+          },
+        ),
+      ],
     );
   }
 }
