@@ -34,24 +34,8 @@ class _HomeScreenState extends State<HomeScreen> {
         body: SingleChildScrollView(
           child: Column(children: [
             const _CustomTextField(),
-            TrendingWidget(songs: songs),
-            Padding(
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                children: [
-                  const SectionHeader(title: "Playlist", action: "View More"),
-                  ListView.builder(
-                    physics: const NeverScrollableScrollPhysics(),
-                    padding: const EdgeInsets.only(top: 20),
-                    shrinkWrap: true,
-                    itemCount: playlist.length,
-                    itemBuilder: (context, index) {
-                      return PlaylistCard(playlist: playlist[index]);
-                    },
-                  )
-                ],
-              ),
-            )
+            _TrendingWidget(songs: songs),
+            _PLaylistMusic(playlist: playlist)
           ]),
         ),
       ),
@@ -59,8 +43,37 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-class TrendingWidget extends StatelessWidget {
-  const TrendingWidget({
+class _PLaylistMusic extends StatelessWidget {
+  const _PLaylistMusic({
+    Key? key,
+    required this.playlist,
+  }) : super(key: key);
+
+  final List<Playlist> playlist;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(20),
+      child: Column(
+        children: [
+          const SectionHeader(title: "Playlist", action: "View More"),
+          ListView.builder(
+              physics: const NeverScrollableScrollPhysics(),
+              padding: const EdgeInsets.only(top: 20),
+              shrinkWrap: true,
+              itemCount: playlist.length,
+              itemBuilder: ((context, index) {
+                return PlaylistCard(playlist: playlist[index]);
+              }))
+        ],
+      ),
+    );
+  }
+}
+
+class _TrendingWidget extends StatelessWidget {
+  const _TrendingWidget({
     Key? key,
     required this.songs,
   }) : super(key: key);

@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
 
 import '../models/song_model.dart';
+import '../widgets/player_button.dart';
 import '../widgets/seekbar.dart';
 import 'package:rxdart/rxdart.dart' as rxdart;
 
@@ -15,13 +16,27 @@ class SongScreen extends StatefulWidget {
 
 class _SongScreenState extends State<SongScreen> {
   AudioPlayer audioPlayer = AudioPlayer();
-  Song song = Song.songs[0];
+  Song song = Get.arguments ?? Song.songs[0];
 
   @override
   void initState() {
     super.initState();
-    audioPlayer.setAudioSource(ConcatenatingAudioSource(
-        children: [AudioSource.uri(Uri.parse('asset:///${song.url}'))]));
+
+    audioPlayer.setAudioSource(
+      ConcatenatingAudioSource(
+        children: [
+          AudioSource.uri(
+            Uri.parse('asset:///${song.url}'),
+          ),
+          // AudioSource.uri(
+          //   Uri.parse('asset:///${Song.songs[1].url}'),
+          // ),
+          // AudioSource.uri(
+          //   Uri.parse('asset:///${Song.songs[2].url}'),
+          // ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -35,63 +50,79 @@ class _SongScreenState extends State<SongScreen> {
           audioPlayer.positionStream, audioPlayer.durationStream,
           (Duration position, Duration? duration) {
         return SeekBarData(
-            position: position, duration: duration ?? Duration.zero);
+          position,
+          duration ?? Duration.zero,
+        );
       });
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          automaticallyImplyLeading: false,
-          actions: [
-            IconButton(
-              icon: const Icon(
-                Icons.arrow_back,
-                color: Colors.deepPurple,
-              ),
-              tooltip: 'Open shopping cart',
-              onPressed: () {
-                Get.back();
-              },
-            ),
-          ],
-        ),
-        extendBodyBehindAppBar: true,
-        body: Stack(
-          fit: StackFit.expand,
-          children: [
-            Image.asset(
-              song.backgroundUrl,
-              fit: BoxFit.cover,
-            ),
-            const _BackgroundFilter(),
-            MusicPLayer(
-                seekBarDataStream: _seekBarDataStream, audioPlayer: audioPlayer)
-          ],
-        ));
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+      ),
+      extendBodyBehindAppBar: true,
+      body: Stack(
+        fit: StackFit.expand,
+        children: [
+          Image.asset(
+            song.backgroundUrl,
+            fit: BoxFit.cover,
+          ),
+          const _BackgroundFilter(),
+          _MusicPlayer(
+            song: song,
+            seekBarDataStream: _seekBarDataStream,
+            audioPlayer: audioPlayer,
+          ),
+        ],
+      ),
+    );
   }
 }
 
-class MusicPLayer extends StatelessWidget {
-  const MusicPLayer({
+class _MusicPlayer extends StatelessWidget {
+  const _MusicPlayer({
     Key? key,
+    required this.song,
     required Stream<SeekBarData> seekBarDataStream,
     required this.audioPlayer,
   })  : _seekBarDataStream = seekBarDataStream,
         super(key: key);
 
+  final Song song;
   final Stream<SeekBarData> _seekBarDataStream;
   final AudioPlayer audioPlayer;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
+      padding: const EdgeInsets.symmetric(
+        horizontal: 20.0,
+        vertical: 50.0,
+      ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          Text(
+            song.title,
+            style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
+          ),
+          const SizedBox(height: 10),
+          Text(
+            song.description,
+            maxLines: 2,
+            style: Theme.of(context)
+                .textTheme
+                .bodySmall!
+                .copyWith(color: Colors.white),
+          ),
+          const SizedBox(height: 30),
           StreamBuilder<SeekBarData>(
             stream: _seekBarDataStream,
             builder: (context, snapshot) {
@@ -99,79 +130,35 @@ class MusicPLayer extends StatelessWidget {
               return SeekBar(
                 position: positionData?.position ?? Duration.zero,
                 duration: positionData?.duration ?? Duration.zero,
-                onChanged: audioPlayer.seek,
+                onChangedEnd: audioPlayer.seek,
               );
             },
           ),
-          _PlayerButton(audioPlayer: audioPlayer)
+          PlayerButton(audioPlayer: audioPlayer),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              IconButton(
+                iconSize: 35,
+                onPressed: () {},
+                icon: const Icon(
+                  Icons.settings,
+                  color: Colors.white,
+                ),
+              ),
+              IconButton(
+                iconSize: 35,
+                onPressed: () {},
+                icon: const Icon(
+                  Icons.cloud_download,
+                  color: Colors.white,
+                ),
+              ),
+            ],
+          ),
         ],
       ),
-    );
-  }
-}
-
-class _PlayerButton extends StatelessWidget {
-  const _PlayerButton({
-    Key? key,
-    required this.audioPlayer,
-  }) : super(key: key);
-
-  final AudioPlayer audioPlayer;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        StreamBuilder<PlayerState>(
-          stream: audioPlayer.playerStateStream,
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              final playerState = snapshot.data;
-              final processingState = playerState!.processingState;
-
-              if (processingState == ProcessingState.loading ||
-                  processingState == ProcessingState.buffering) {
-                return Container(
-                  width: 64.0,
-                  height: 64.0,
-                  margin: const EdgeInsets.all(10),
-                  child: const CircularProgressIndicator(),
-                );
-              } else if (!audioPlayer.playing) {
-                return IconButton(
-                  onPressed: audioPlayer.play,
-                  icon: const Icon(
-                    Icons.play_circle,
-                    color: Colors.white,
-                  ),
-                  iconSize: 75,
-                );
-              } else if (processingState != ProcessingState.completed) {
-                return IconButton(
-                  onPressed: audioPlayer.pause,
-                  icon: const Icon(
-                    Icons.play_circle,
-                    color: Colors.white,
-                  ),
-                  iconSize: 75,
-                );
-              } else {
-                return IconButton(
-                  onPressed: () => audioPlayer.seek(Duration.zero,
-                      index: audioPlayer.effectiveIndices!.first),
-                  icon: const Icon(
-                    Icons.replay_circle_filled_outlined,
-                    color: Colors.white,
-                  ),
-                  iconSize: 75,
-                );
-              }
-            } else {
-              return const CircularProgressIndicator();
-            }
-          },
-        ),
-      ],
     );
   }
 }
@@ -202,13 +189,15 @@ class _BackgroundFilter extends StatelessWidget {
       blendMode: BlendMode.dstOut,
       child: Container(
         decoration: BoxDecoration(
-            gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
               Colors.deepPurple.shade200,
               Colors.deepPurple.shade800,
-            ])),
+            ],
+          ),
+        ),
       ),
     );
   }
