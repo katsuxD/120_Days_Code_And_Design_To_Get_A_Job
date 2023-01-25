@@ -1,6 +1,14 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:khanhdang_cv_flutter_ui/Widgets/Animated/animated_shape_container.dart';
+import 'package:khanhdang_cv_flutter_ui/Widgets/Cursor/animated-circle_cursor.dart';
+import 'package:khanhdang_cv_flutter_ui/Widgets/Text/poppins.dart';
+
+import '../Widgets/Buttons/gradient_button.dart';
+import '../Widgets/Buttons/haptic_circle.dart';
+import '../Widgets/icons/padded_icon.dart';
 
 class Homepage extends StatelessWidget {
   const Homepage({super.key});
@@ -23,90 +31,46 @@ class Homepage extends StatelessWidget {
                     children: [
                       Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: SizedBox(
-                          height: 120,
-                          width: 160,
-                          child: Image.asset(
-                            "./asssets/images/logo.png",
-                            filterQuality: FilterQuality.high,
+                        child: AnimatedCircleCursorMouseRegion(
+                          child: SizedBox(
+                            height: 120,
+                            width: 160,
+                            child: Image.asset(
+                              "./assets/images/logo.png",
+                              filterQuality: FilterQuality.high,
+                            ),
                           ),
                         ),
                       ),
                       Row(
                         children: [
-                          const Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: Icon(
-                              FontAwesomeIcons.facebookF,
-                              color: Color(0xff3B5999),
-                            ),
+                          const PaddedIcon(
+                            color: Color(0xff3B5999),
+                            icon: FontAwesomeIcons.facebookF,
                           ),
-                          const Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: Icon(
-                              FontAwesomeIcons.twitter,
-                              color: Color(0xff03A9F4),
-                            ),
+                          const PaddedIcon(
+                            color: Color(0xff03A9F4),
+                            icon: FontAwesomeIcons.twitter,
                           ),
-                          const Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: Icon(
-                              FontAwesomeIcons.medium,
-                              color: Color.fromARGB(255, 31, 28, 28),
-                            ),
+                          const PaddedIcon(
+                            color: Color.fromARGB(255, 31, 28, 28),
+                            icon: FontAwesomeIcons.medium,
                           ),
-                          const Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: Icon(
-                              FontAwesomeIcons.instagram,
-                              color: Color(0xffF44535),
-                            ),
+                          const PaddedIcon(
+                            color: Color(0xffF44535),
+                            icon: FontAwesomeIcons.instagram,
                           ),
                           const SizedBox(
                             width: 20,
                           ),
-                          SizedBox(
-                            width: 250,
-                            height: 80,
-                            child: Padding(
-                              padding: const EdgeInsets.all(10.0),
-                              child: Card(
-                                elevation: 10,
-                                child: Container(
-                                  decoration: const BoxDecoration(
-                                    gradient: LinearGradient(colors: [
-                                      Color(0xffFF451B),
-                                      Color(0xffFF451B)
-                                    ]),
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(5),
-                                    ),
-                                  ),
-                                  child: ElevatedButton(
-                                    style: ButtonStyle(
-                                      elevation:
-                                          MaterialStateProperty.all<double>(0),
-                                      overlayColor:
-                                          MaterialStateProperty.all<Color>(
-                                              Colors.red),
-                                      padding: MaterialStateProperty.all<
-                                              EdgeInsetsGeometry>(
-                                          const EdgeInsets.all(0)),
-                                      backgroundColor:
-                                          MaterialStateProperty.all<Color>(
-                                              Colors.transparent),
-                                    ),
-                                    onPressed: () {},
-                                    child: Text(
-                                      "Dowload CV",
-                                      style: GoogleFonts.poppins(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.w600,
-                                          color: Colors.white),
-                                    ),
-                                  ),
-                                ),
-                              ),
+                          AnimatedCircleCursorMouseRegion(
+                            child: GradientButton(
+                              clr: const [Color(0xffFF451B), Color(0xffFF451B)],
+                              height: 80,
+                              width: 250,
+                              overlayColor: Colors.red,
+                              onpressed: () {},
+                              title: "Download CV",
                             ),
                           )
                         ],
@@ -114,7 +78,102 @@ class Homepage extends StatelessWidget {
                     ],
                   ),
                 ),
-                Container(),
+                const SizedBox(
+                  height: 60,
+                ),
+                Container(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        flex: 2,
+                        child: Container(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Poppins(
+                                text: " I'm",
+                                color: const Color(0xffFF451B),
+                                fontSize: 30,
+                                fontWeight: FontWeight.w700,
+                              ),
+                              Poppins(
+                                text: "Đặng Gia \nKhánh",
+                                color: const Color(0xff222222),
+                                fontSize: 100,
+                                fontWeight: FontWeight.w700,
+                              ),
+                              Poppins(
+                                text:
+                                    "A passionate software engineer, product designer with web and mobile app",
+                                color: const Color(0xff888888),
+                                fontSize: 25,
+                                fontWeight: FontWeight.w400,
+                              ),
+                              const SizedBox(
+                                height: 30,
+                              ),
+                              Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  AnimatedCircleCursorMouseRegion(
+                                    child: HapticCircle(
+                                      btnColor: const Color(0xffFFB324),
+                                      hapticColor: Colors.grey.withOpacity(0.2),
+                                      radius: 10,
+                                      height: 80,
+                                      width: 80,
+                                      iconData: FontAwesomeIcons.play,
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    width: 30,
+                                  ),
+                                  Poppins(
+                                    text: "Play Video",
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.bold,
+                                  )
+                                ],
+                              )
+                            ],
+                          ),
+                        ),
+                      ), //left section
+                      Expanded(
+                        child: Stack(
+                          children: [
+                            const Positioned(
+                              top: 30,
+                              left: 100,
+                              child: AnimatedShapedContainer(),
+                            ),
+                            Container(
+                              alignment: Alignment.centerRight,
+                              child: Column(
+                                children: [
+                                  const SizedBox(
+                                    height: 40,
+                                  ),
+                                  ClipRRect(
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(15)),
+                                    child: SizedBox(
+                                        height: 500,
+                                        child: Image.asset(
+                                          "./assets/images/avatar.jpg",
+                                        )),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ), //right section
+                    ],
+                  ),
+                ), //Mid Section Row
                 Container(),
                 Container(),
               ],
