@@ -31,7 +31,7 @@ class AnimatedCursorProvider extends ChangeNotifier {
     if (renderBox == null) return;
 
     state = AnimatedCursorState(
-      size1: Size(60, 60),
+      size1: const Size(60, 60),
       offset1: state.offset1,
       decoration: CursorConstants.boxDecorationHovered,
     );
@@ -81,10 +81,10 @@ class AnimatedCursorWrapper extends StatelessWidget {
                   top: state.offset1.dy - state.size1.height / 2,
                   width: state.size1.width,
                   height: state.size1.height,
-                  duration: Duration(milliseconds: 100),
+                  duration: const Duration(milliseconds: 100),
                   child: IgnorePointer(
                     child: AnimatedContainer(
-                        duration: Duration(milliseconds: 300),
+                        duration: const Duration(milliseconds: 300),
                         curve: Curves.easeOutExpo,
                         width: state.size1.width,
                         height: state.size1.height,

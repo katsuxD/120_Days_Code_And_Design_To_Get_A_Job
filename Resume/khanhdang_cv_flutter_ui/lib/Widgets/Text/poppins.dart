@@ -45,8 +45,9 @@ class Poppins extends StatelessWidget {
   final String? package;
   final TextOverflow? styleoverflow;
 
-  Poppins(
-      {required this.text,
+  const Poppins(
+      {super.key,
+      required this.text,
       this.style,
       this.strutStyle,
       this.textAlign,
