@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:khanhdang_cv_flutter_ui/Components/about_component.dart';
+import 'package:khanhdang_cv_flutter_ui/Provider/tab_data_provider.dart';
 import 'package:khanhdang_cv_flutter_ui/Widgets/Animated/Shape/circle_grid_shape.dart';
 import 'package:khanhdang_cv_flutter_ui/Widgets/Animated/Shape/circle_shape.dart';
 import 'package:khanhdang_cv_flutter_ui/Widgets/Animated/Shape/line_shape.dart';
@@ -13,132 +15,134 @@ import '../Widgets/Animated/animated_textbox_slider.dart';
 import '../Widgets/Buttons/gradient_button.dart';
 import '../Widgets/Buttons/haptic_circle.dart';
 import '../Widgets/icons/padded_icon.dart';
+import 'package:provider/provider.dart';
 
 class Homepage extends StatelessWidget {
   const Homepage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    String tabData = context.watch<TabDataProvider>().tabData;
     return Scaffold(
       backgroundColor: const Color(0xffF1FAFF),
-      body: Stack(
-        //Using Stack for background animation
+      body: SingleChildScrollView(
+        child: Stack(
+          //Using Stack for background animation
 
-        children: [
-          const Positioned(
-              top: 150,
-              left: 80,
-              child: CircleShape(
-                radius: 10,
-                strokeWidth: 1,
-                lineColor: Color(0xffC9CDFF),
-                strokeJoin: StrokeJoin.round,
-              )),
-          const Positioned(
-              top: 300,
-              left: 150,
-              child: SquareShape(
-                height: 55,
-                width: 55,
-                strokeWidth: 5,
-                lineColor: Color(0xffDBF1CD),
-              )),
-          const Positioned(
-              top: 500,
-              left: 150,
-              child: LineShape(
-                width: 40,
-                strokeWidth: 5,
-                lineColor: Color(0xffC9CDFF),
-              )),
-          const Positioned(
-              top: 620,
-              left: 50,
-              child: TriagnleShape(
-                height: 30,
-                width: 40,
-                strokeWidth: 4,
-                lineColor: Color(0xffB7BEC1),
-              )),
-          const Positioned(
-              bottom: 120,
-              left: 120,
-              child: CircleGridShape(
-                height: 130,
-                width: 90,
-                color: Color(0xffC9CDFF),
-                crossAxisCount: 4,
-                itemCount: 20,
-                gap: 6,
-              )),
-          const Positioned(
-              top: 730,
-              left: 220,
-              child: CircleShape(
-                radius: 10,
-                strokeWidth: 1,
-                lineColor: Color.fromARGB(255, 187, 224, 25),
-                strokeJoin: StrokeJoin.round,
-              )),
-          const Positioned(
-              top: 650,
-              left: 900,
-              child: TriagnleShape(
-                height: 33,
-                width: 40,
-                strokeWidth: 4,
-                lineColor: Color(0xffF5C4C7),
-              )),
-          const Positioned(
-              top: 180,
-              right: 120,
-              child: CircleGridShape(
-                height: 130,
-                width: 90,
-                color: Color(0xffC9CDFF),
-                crossAxisCount: 4,
-                itemCount: 20,
-                gap: 6,
-              )),
-          const Positioned(
-              top: 150,
-              right: 230,
-              child: CircleShape(
-                radius: 8,
-                strokeWidth: 5,
-                lineColor: Color(0xffDBF1CD),
-                strokeJoin: StrokeJoin.round,
-              )),
-          const Positioned(
-              top: 600,
-              right: 50,
-              child: LineShape(
-                width: 40,
-                strokeWidth: 5,
-                lineColor: Color(0xffC9CDFF),
-              )),
-          const Positioned(
-              top: 800,
-              right: 100,
-              child: SquareShape(
-                height: 75,
-                width: 55,
-                strokeWidth: 5,
-                lineColor: Color(0xffDBF1CD),
-              )),
-          const Positioned(
-              top: 300,
-              right: 50,
-              child: TriagnleShape(
-                height: 44,
-                width: 40,
-                strokeWidth: 4,
-                lineColor: Color(0xffB7BEC1),
-              )),
-          Padding(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 250.0, vertical: 30),
-            child: SingleChildScrollView(
+          children: [
+            const Positioned(
+                top: 150,
+                left: 80,
+                child: CircleShape(
+                  radius: 10,
+                  strokeWidth: 1,
+                  lineColor: Color(0xffC9CDFF),
+                  strokeJoin: StrokeJoin.round,
+                )),
+            const Positioned(
+                top: 300,
+                left: 150,
+                child: SquareShape(
+                  height: 55,
+                  width: 55,
+                  strokeWidth: 5,
+                  lineColor: Color(0xffDBF1CD),
+                )),
+            const Positioned(
+                top: 500,
+                left: 150,
+                child: LineShape(
+                  width: 40,
+                  strokeWidth: 5,
+                  lineColor: Color(0xffC9CDFF),
+                )),
+            const Positioned(
+                top: 620,
+                left: 50,
+                child: TriagnleShape(
+                  height: 30,
+                  width: 40,
+                  strokeWidth: 4,
+                  lineColor: Color(0xffB7BEC1),
+                )),
+            const Positioned(
+                bottom: 120,
+                left: 120,
+                child: CircleGridShape(
+                  height: 130,
+                  width: 90,
+                  color: Color(0xffC9CDFF),
+                  crossAxisCount: 4,
+                  itemCount: 20,
+                  gap: 6,
+                )),
+            const Positioned(
+                top: 730,
+                left: 220,
+                child: CircleShape(
+                  radius: 10,
+                  strokeWidth: 1,
+                  lineColor: Color.fromARGB(255, 187, 224, 25),
+                  strokeJoin: StrokeJoin.round,
+                )),
+            const Positioned(
+                top: 650,
+                left: 900,
+                child: TriagnleShape(
+                  height: 33,
+                  width: 40,
+                  strokeWidth: 4,
+                  lineColor: Color(0xffF5C4C7),
+                )),
+            const Positioned(
+                top: 180,
+                right: 120,
+                child: CircleGridShape(
+                  height: 130,
+                  width: 90,
+                  color: Color(0xffC9CDFF),
+                  crossAxisCount: 4,
+                  itemCount: 20,
+                  gap: 6,
+                )),
+            const Positioned(
+                top: 150,
+                right: 230,
+                child: CircleShape(
+                  radius: 8,
+                  strokeWidth: 5,
+                  lineColor: Color(0xffDBF1CD),
+                  strokeJoin: StrokeJoin.round,
+                )),
+            const Positioned(
+                top: 600,
+                right: 50,
+                child: LineShape(
+                  width: 40,
+                  strokeWidth: 5,
+                  lineColor: Color(0xffC9CDFF),
+                )),
+            const Positioned(
+                top: 800,
+                right: 100,
+                child: SquareShape(
+                  height: 75,
+                  width: 55,
+                  strokeWidth: 5,
+                  lineColor: Color(0xffDBF1CD),
+                )),
+            const Positioned(
+                top: 300,
+                right: 50,
+                child: TriagnleShape(
+                  height: 44,
+                  width: 40,
+                  strokeWidth: 4,
+                  lineColor: Color(0xffB7BEC1),
+                )),
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 250.0, vertical: 30),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -303,8 +307,12 @@ class Homepage extends StatelessWidget {
                       AnimatedTextboxSlider(
                         icon: FontAwesomeIcons.info,
                         title: "About Me",
-                        onpressed: () {},
-                        tabData: "none",
+                        onpressed: () {
+                          context
+                              .read<TabDataProvider>()
+                              .changeTabData("About Me");
+                        },
+                        tabData: tabData,
                         color: const Color(0xffff451b),
                         width: 250,
                       ),
@@ -312,7 +320,7 @@ class Homepage extends StatelessWidget {
                         icon: FontAwesomeIcons.addressBook,
                         title: "Resume",
                         onpressed: () {},
-                        tabData: "none",
+                        tabData: tabData,
                         color: const Color(0xffff451b),
                         width: 250,
                       ),
@@ -320,7 +328,7 @@ class Homepage extends StatelessWidget {
                         icon: FontAwesomeIcons.thinkPeaks,
                         title: "Portfolio",
                         onpressed: () {},
-                        tabData: "none",
+                        tabData: tabData,
                         color: const Color(0xffff451b),
                         width: 250,
                       ),
@@ -328,7 +336,7 @@ class Homepage extends StatelessWidget {
                         icon: FontAwesomeIcons.star,
                         title: "Testimonial",
                         onpressed: () {},
-                        tabData: "none",
+                        tabData: tabData,
                         color: const Color(0xffff451b),
                         width: 250,
                       ),
@@ -336,7 +344,7 @@ class Homepage extends StatelessWidget {
                         icon: FontAwesomeIcons.gear,
                         title: "Service",
                         onpressed: () {},
-                        tabData: "none",
+                        tabData: tabData,
                         color: const Color(0xffff451b),
                         width: 250,
                       ),
@@ -344,7 +352,7 @@ class Homepage extends StatelessWidget {
                         icon: FontAwesomeIcons.blog,
                         title: "Article",
                         onpressed: () {},
-                        tabData: "none",
+                        tabData: tabData,
                         color: const Color(0xffff451b),
                         width: 250,
                       ),
@@ -352,38 +360,21 @@ class Homepage extends StatelessWidget {
                         icon: FontAwesomeIcons.envelope,
                         title: "Contact",
                         onpressed: () {},
-                        tabData: "none",
+                        tabData: tabData,
                         color: const Color(0xffff451b),
                         width: 250,
                       ),
                     ],
                   ),
-                  // const LineShape(
-                  //   width: 100,
-                  //   height: 100,
-                  // ),
-                  // const SquareShape(
-                  //   width: 100,
-                  //   height: 100,
-                  // ),
-                  // const TriagnleShape(
-                  //   width: 100,
-                  //   height: 100,
-                  // ),
-                  // const CircleGridShape(
-                  //   height: 130,
-                  //   width: 90,
-                  //   crossAxisCount: 4,
-                  //   itemCount: 20,
-                  //   color: Color(0xffC9CDFF),
-                  //   gap: 6,
-                  // ),
-                  Container(),
+                  const SizedBox(
+                    height: 70,
+                  ),
+                  tabData == "About Me" ? AboutComponent() : Container(),
                 ],
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
