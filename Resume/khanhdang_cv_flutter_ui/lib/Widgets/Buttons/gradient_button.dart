@@ -5,7 +5,7 @@ class GradientButton extends StatelessWidget {
   final String title;
   final List<Color> clr;
   final Color overlayColor;
-  final Function() onpressed;
+  final Function()? onpressed;
   final double width;
   final double height;
   final double? roundness;
@@ -15,7 +15,7 @@ class GradientButton extends StatelessWidget {
     required this.title,
     required this.clr,
     required this.overlayColor,
-    required this.onpressed,
+     this.onpressed,
     required this.width,
     required this.height,
     this.roundness,
@@ -31,11 +31,12 @@ class GradientButton extends StatelessWidget {
         child: Card(
           elevation: 10,
           child: Container(
-            decoration:  BoxDecoration(
+            decoration: BoxDecoration(
               gradient: LinearGradient(
-                  //colors: [Color(0xffFF451B), Color(0xffFF451B)]),
-                  colors: clr,),
-              borderRadius:  BorderRadius.all(
+                //colors: [Color(0xffFF451B), Color(0xffFF451B)]),
+                colors: clr,
+              ),
+              borderRadius: BorderRadius.all(
                 Radius.circular(roundness ?? 5),
               ),
             ),
@@ -63,4 +64,3 @@ class GradientButton extends StatelessWidget {
     );
   }
 }
- 
